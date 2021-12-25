@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - test-vcpkg-ci
   schedule:
     - cron: "0 0 * * 1"
 
