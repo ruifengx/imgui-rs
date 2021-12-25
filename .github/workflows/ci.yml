@@ -132,9 +132,11 @@ jobs:
             ${{ runner.os }}-target-test-${{ matrix.rust }}-${{ hashFiles('**/Cargo.toml') }}
             ${{ runner.os }}-target-test-${{ matrix.rust }}-
 
-      # - name: Setup vcpkg
-      #   if: matrix.os == 'windows-latest'
-      #   run: vcpkg integrate install; vcpkg install freetype;
+      - name: Setup vcpkg
+        if: matrix.os == 'windows-latest'
+        run: |
+          vcpkg integrate install
+          vcpkg install freetype --triplet x64-windows-static-md
 
       # feature testing
       - name: no features
@@ -144,11 +146,9 @@ jobs:
         run: cargo test --workspace --all-targets --features docking
 
       - name: freetype feature
-        if: matrix.os != 'windows-latest'
         run: cargo test --workspace --all-targets --features freetype
 
       - name: freetype and docking
-        if: matrix.os != 'windows-latest'
         run: cargo test --workspace --all-targets --features freetype,docking
 
       - run: cargo test --workspace --doc
